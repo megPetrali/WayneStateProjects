@@ -12,25 +12,50 @@ app = dash.Dash(__name__)
 
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+df = pd.read_csv('dice.csv')
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+df = df.drop(columns='Unnamed: 0', axis=1)
+
+from wordcloud import WordCloud, STOPWORDS 
+import matplotlib.pyplot as plt 
+
+stopwords = set(STOPWORDS)
+
+file_lines = df['title'].values.flatten()
+
+words =''
+for line in file_lines:
+  tokens = line.split()
+  for token in tokens:
+    words = words + ' ' + token
+
+wordcloud = WordCloud(width = 800, height = 800, 
+                background_color ='white', 
+                stopwords = stopwords, 
+                min_font_size = 10).generate(words.lower()) 
+
+
+# plot the WordCloud                        
+plt.figure(figsize = (8, 8)) 
+plt.imshow(wordcloud) 
+plt.axis("off") 
+plt.tight_layout(pad = 0) 
+wordcloud.to_file('assets/wc.png')
 
 app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+    html.H1(children='DSE 6000 Final Project'),
 
     html.Div(children='''
         Dash: A web application framework for your data.
     '''),
 
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
+    html.Div(
+        html.Img(src='assets/wc.png')
+    ),
+
+    html.Div(children='''
+        This is a wordcloud.
+    ''')
 ])
 
 if __name__ == '__main__':
