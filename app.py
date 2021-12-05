@@ -20,27 +20,28 @@ from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt 
 
 stopwords = set(STOPWORDS)
+def create_wordcloud(file_lines, file_name):
 
-file_lines = df['title'].values.flatten()
+    words =''
+    for line in file_lines:
+        tokens = line.split()
+        for token in tokens:
+            words = words + ' ' + token
 
-words =''
-for line in file_lines:
-  tokens = line.split()
-  for token in tokens:
-    words = words + ' ' + token
-
-wordcloud = WordCloud(width = 800, height = 800, 
-                background_color ='white', 
-                stopwords = stopwords, 
-                min_font_size = 10).generate(words.lower()) 
+    wordcloud = WordCloud(width = 800, height = 800, 
+                    background_color ='white', 
+                    stopwords = stopwords, 
+                    min_font_size = 10).generate(words.lower()) 
 
 
-# plot the WordCloud                        
-plt.figure(figsize = (8, 8)) 
-plt.imshow(wordcloud) 
-plt.axis("off") 
-plt.tight_layout(pad = 0) 
-wordcloud.to_file('assets/wc.png')
+    # plot the WordCloud                        
+    plt.figure(figsize = (8, 8)) 
+    plt.imshow(wordcloud) 
+    plt.axis("off") 
+    plt.tight_layout(pad = 0) 
+    wordcloud.to_file('assets/' + file_name)
+
+create_wordcloud(df['title'].values.flatten(), 'dice_jobtitle_wc.png')
 
 app.layout = html.Div(children=[
     html.H1(children='DSE 6000 Final Project'),
