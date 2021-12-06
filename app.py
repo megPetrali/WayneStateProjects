@@ -19,6 +19,14 @@ df = df.drop(columns='Unnamed: 0', axis=1)
 from wordcloud import WordCloud, STOPWORDS 
 import matplotlib.pyplot as plt 
 
+
+
+
+
+
+
+
+
 stopwords = set(STOPWORDS)
 def create_wordcloud(file_lines, file_name):
 
@@ -51,7 +59,7 @@ app.layout = html.Div(children=[
     '''),
 
     html.Div(
-        html.Img(src='assets/wc.png')
+        html.Img(src='assets/dice_jobtitle_wc.png')
     ),
 
     html.Div(children='''
