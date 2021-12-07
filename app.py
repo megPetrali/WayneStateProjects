@@ -153,6 +153,7 @@ import matplotlib.pyplot as plt
 
 stopwords = set(STOPWORDS)
 def create_wordcloud(file_lines, file_name):
+    # file_lines = dice['title'].values.flatten()
 
     words =''
     for line in file_lines:
@@ -171,24 +172,78 @@ def create_wordcloud(file_lines, file_name):
     plt.imshow(wordcloud) 
     plt.axis("off") 
     plt.tight_layout(pad = 0) 
-    wordcloud.to_file('assets/' + file_name)
+    wordcloud.to_file('assets/' + file_name )
 
-create_wordcloud(dice['title'].values.flatten(), 'dice_jobtitle_wc.png')
+
+create_wordcloud(simply['title'].values.flatten(), 'simplyhired_jobtitle_wc.png')
+
+def generate_table(dataframe, max_rows=10):
+    return html.Table([
+        html.Thead(
+            html.Tr([html.Th(col) for col in dataframe.columns])
+        ),
+        html.Tbody([
+            html.Tr([
+                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
+            ]) for i in range(min(len(dataframe), max_rows))
+        ])
+    ])
+
+wordcloud_trends = [
+    '''In this wordcloud, we can see that Data Scientist is the most frequent string in the job title field, indicating that this is a job with many
+        opportunities under it. If someone is looking for a position with the specific title of Data Scientist, then this is a good dataset for them to look in!'''
+    ,
+    '''We can also see prominent job titles of Data Analyst, Statistical Programmer, and Data Science. Data Analyst is definitely a job that many people specifically look for,
+        and this dataset gives many opportunities for them. Data Science is probably a job asset that Data Scientists might look for, reinforcing our previous point that this
+        dataset contains many opportunities for Data Scientists. 
+        '''
+    ,
+    '''Statistical Programmer, however, is a much different string from those previously mentioned. That it is in such high
+        demand here is very interesting. Job seekers looking for a job in the data field and excel at programming might want to take this to mean they should
+        look more into job opportunities like these.
+    '''
+    ,
+    '''We also see some terms that are very similar to job titles already mentioned, like Analyst Data, Data Science, and multiple that contain the word Analyst,
+        including healthcare, QA, and Technology. This indicates that Analysts of all types are in high demand. This also indicates to us that when applying for jobs, having an idea of what kind of analyst
+        you want to be can give you an advantage in honing in on a job of interest and one that will be a good fit.
+    '''
+    ,
+    '''Finally, we see a multitude of levels represented in this data. We can see that there are roles open for Junior-level, Senior Level, and even
+    Managers. This dataset contains jobs for everyone, regardless of how far they are in their career. There does seem to be slightly more jobs for Senior levels
+    than there are for the others, making this source an expecially good one for those who are already on the senior leve and for people looking to move up in their
+    career.
+    '''
+]
 
 app.layout = html.Div(children=[
     html.H1(children='DSE 6000 Final Project'),
 
     html.Div(children='''
-        Dash: A web application framework for your data.
+        Rachel Balon, Krishna Manjeera Chittoor, Joseph Felice
+    '''),
+
+    html.Br(),
+
+    html.Div(children='''
+        The following is a wordcloud of the job titles in the SimplyHired dataframe. We wanted to see what the most 
+        frequent terms are listed in the Job Title fields. This would give us an idea of what the most common job titles are, 
+        which in turn would give us an idea of what the most common choices are for people looking to get into Data Science careers.
     '''),
 
     html.Div(
-        html.Img(src='assets/dice_jobtitle_wc.png')
+        html.Img(src=app.get_asset_url("simplyhired_jobtitle_wc.png"))
     ),
 
     html.Div(children='''
-        This is a wordcloud.
-    ''')
+          
+    '''),
+
+    html.Div(
+        className="wordcloud_trends",
+        children=[
+            html.Ul(id='wc_trend_list', children=[html.Li(i) for i in wordcloud_trends])
+        ],
+    )
 ])
 
 if __name__ == '__main__':
