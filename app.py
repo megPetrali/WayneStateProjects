@@ -202,11 +202,35 @@ salary_jobtitle_boxplot_trends = [
 
 ]
 
-
+#remote vs in person comparision
 avg_salaries_locationtype = simply.dropna().groupby('location_type' , as_index=False ).mean()
 avg_salaries_locationtype.head()
 
 fig_RemoteComparison = px.bar(avg_salaries_locationtype, x='location_type', y='salary' , text = 'salary')
+
+#create plotly salary map by state
+from urllib.request import urlopen
+import json
+import pandas as pd
+import plotly.express as px
+
+with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
+      print(type(response))
+      counties = json.load(response)
+
+data_tograph = indeed.dropna()
+
+fig_salarymap = px.choropleth(indeed,  locations='location_state', 
+                             color = 'salary' ,
+                             color_continuous_scale="Greens", 
+                             locationmode = 'USA-states',                            
+                             scope="usa") 
+                            
+
+fig_salarymap.update_layout(
+    title_text = 'Salary by State' ,
+    margin={"r":0, "t":0, "l":0, "b":0} 
+)
 
 app.layout = html.Div(children=[
     html.H1(children='DSE 6000 Final Project'),
@@ -265,6 +289,11 @@ app.layout = html.Div(children=[
     dcc.Graph(
         id='remote_graph',
         figure=fig_RemoteComparison
+    ),
+    
+    dcc.Graph(
+        id='salary_map',
+        figure=fig_salarymap
     ),
     
 ])
