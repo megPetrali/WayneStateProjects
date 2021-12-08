@@ -135,6 +135,28 @@ def create_wordcloud(file_lines, file_name):
     wordcloud.to_file('assets/' + file_name )
 
 
+indeed['lower_title'] = indeed['title'].str.lower()
+indeed['simplified_title'] = np.where(indeed['lower_title'].str.find("manager") >= 0, "Manager",
+                            np.where(indeed['lower_title'].str.find("director") >= 0, "Director",
+                            np.where(indeed['lower_title'].str.find("vp ") >= 0, "Vice President",
+                            np.where(indeed['lower_title'].str.find("vice president") >= 0, "Vice President",
+                            np.where(indeed['lower_title'].str.find("data scientist") >= 0, "Scientist",
+                            np.where(indeed['lower_title'].str.find("analyst") >= 0, "Analyst",
+                            np.where(indeed['lower_title'].str.find("statisti") >= 0, "Statistician",
+                            np.where(indeed['lower_title'].str.find("engineer") >= 0, "Engineer", 
+                            np.where(indeed['lower_title'].str.find("data science") >= 0, "Other - DS", "Other")))))))))
+indeed.drop(columns='lower_title', axis=0, inplace=True)
+
+salary_job_title_plot = px.box(indeed, 
+                                x="simplified_title", 
+                                y="salary", 
+                                title="Salaries by Job Titles", 
+                                labels={'simplified_title': 'Job Title', 'salary': 'Salary'},
+                                category_orders={"simplified_title": ["Analyst","Engineer","Scientist","Statistician","Other - DS","Other"]}
+                                )
+
+
+
 create_wordcloud(simply['title'].values.flatten(), 'simplyhired_jobtitle_wc.png')
 
 def generate_table(dataframe, max_rows=10):
@@ -174,6 +196,12 @@ wordcloud_trends = [
         '''
 ]
 
+salary_jobtitle_boxplot_trends = [
+    '''Insights Here'''
+
+
+]
+
 
 avg_salaries_locationtype = simply.dropna().groupby('location_type' , as_index=False ).mean()
 avg_salaries_locationtype.head()
@@ -189,7 +217,7 @@ app.layout = html.Div(children=[
 
     html.Br(),
 
-    html.Div(children='''
+    html.H4(children='''
         The following is a wordcloud of the job titles in the SimplyHired dataframe. We wanted to see what the most 
         frequent terms are listed in the Job Title fields. This would give us an idea of what the most common job titles are, 
         which in turn would give us an idea of what the most common choices are for people looking to get into Data Science careers.
@@ -214,8 +242,28 @@ app.layout = html.Div(children=[
         ],
     ),
 
+    html.Br(),
+
+    html.H4(children='''
+        Next, we will look at the job titles at a higher level by categorizing them, which makes it easier to compare salaries by job type. We
+        want to see which job titles pay best and which ones have the potentially highest pay.
+    '''),
+
+    
     dcc.Graph(
-        id='graph',
+        id='salary_title_graph',
+        figure=salary_job_title_plot
+    ),
+
+    html.Div(
+        className="salary_jobtitle_trends",
+        children=[
+            html.Ul(id='salary_jobtitle_trend_list', children=[html.Li(i) for i in salary_jobtitle_boxplot_trends])
+        ],
+    ),
+
+    dcc.Graph(
+        id='remote_graph',
         figure=fig_RemoteComparison
     ),
     
