@@ -175,11 +175,17 @@ wordcloud_trends = [
         '''
 ]
 
+
+avg_salaries_locationtype = simply.dropna().groupby('location_type' , as_index=False ).mean()
+avg_salaries_locationtype.head()
+
+fig_RemoteComparison = px.bar(avg_salaries_locationtype, x='location_type', y='salary' , text = 'salary')
+
 app.layout = html.Div(children=[
     html.H1(children='DSE 6000 Final Project'),
 
     html.H3(children='''
-        Rachel Balon, Krishna Manjeera Chittoor, Joseph Felice
+        Rachel Balon, Megan Petralia, Joseph Felice
     '''),
 
     html.Br(),
@@ -209,7 +215,11 @@ app.layout = html.Div(children=[
         ],
     ),
 
-
+    dcc.Graph(
+        id='graph',
+        figure=fig_RemoteComparison
+    ),
+    
 ])
 
 if __name__ == '__main__':
