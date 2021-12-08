@@ -153,7 +153,7 @@ wordcloud_trends = [
     '''In this wordcloud, we can see that Data Scientist is the most frequent string in the job title field, indicating that this is a job with many
         opportunities under it. If someone is looking for a position with the specific title of Data Scientist, then this is a good dataset for them to look in!'''
     ,
-    '''We can also see prominent job titles of Data Analyst, Statistical Programmer, and Data Science. Data Analyst is definitely a job that many people specifically look for,
+    '''We can also see prominent job titles containing Data Analyst, Machine Learning, and Data Science. Data Analyst is definitely a job that many people specifically look for,
         and this dataset gives many opportunities for them. Data Science is probably a job asset that Data Scientists might look for, reinforcing our previous point that this
         dataset contains many opportunities for Data Scientists. 
         '''
@@ -164,14 +164,13 @@ wordcloud_trends = [
         '''
     ,
     '''We also see some terms that are very similar to job titles already mentioned, like Analyst Data, Data Science, and multiple that contain the word Analyst,
-        including healthcare, QA, and Technology. This indicates that Analysts of all types are in high demand. This also indicates to us that when applying for jobs, having an idea of what kind of analyst
+        including healthcare, QA, and engineering. This indicates that Analysts of all types are in high demand. This also indicates to us that when applying for jobs, having an idea of what kind of analyst
         you want to be can give you an advantage in honing in on a job of interest and one that will be a good fit.
         '''
     ,
     '''Finally, we see a multitude of levels represented in this data. We can see that there are roles open for Junior-level, Senior Level, and even
-        Managers. This dataset contains jobs for everyone, regardless of how far they are in their career. There does seem to be slightly more jobs for Senior levels
-        than there are for the others, making this source an expecially good one for those who are already on the senior leve and for people looking to move up in their
-        career.
+        Managers. This dataset contains jobs for everyone, regardless of how far they are in their career. There does seem to be slightly more jobs for Junior levels
+        than there are for the others, making this source an expecially good one for entry level employees.
         '''
 ]
 
@@ -202,8 +201,8 @@ app.layout = html.Div(children=[
             style={
                 'height':'70%', 
                 'width':'70%',
-                'border-style':'solid',
-                'border-width':'2px'
+                'borderStyle':'solid',
+                'borderWidth':'2px'
             }
         )
     ),
