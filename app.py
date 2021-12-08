@@ -15,48 +15,11 @@ app = dash.Dash(__name__)
 # see https://plotly.com/python/px-arguments/ for more options
 
 
-dice = pd.read_csv('dice.csv', skipinitialspace = True)
-dice = dice.drop(columns='Unnamed: 0', axis=1)
-
-# Clean location
-dice[['location_name','location_city']] = dice['location'].str.split("  ",expand=True)
-dice['location_city'] = dice['location_city'].str.replace(", USA", "")
-
-dice[['location_city','location_state']] = dice['location_city'].str.split(", ",expand=True)
-dice.location_state.fillna(value='Remote', inplace=True)
-
-dice = dice.drop(columns='location_name',axis=1)
-
-#############################################################################################################################################################
-
-flex = pd.read_csv('flexjobs.csv')
-flex = flex.drop(columns='Unnamed: 0', axis=1)
-
-# clean HTML; remove html tags and clean html-encoded characters (also strips newlines and leading/trailing whitespace)
-flex.description = flex.description.str.strip().str.replace(r'<[^<>]*>', '', regex=True)
-import html as python_html
-flex.description = flex.description.map(python_html.unescape)
-
-# remove salary, since this column is empty
-flex.drop(columns='salary', axis=1, inplace=True)
-
-# Clean location; remote locations and US National are remote
-flex['location_type'] = np.where(flex['jobtype'] == ('Option for Remote Job'), "Option for Remote", '0')
-flex['location_type'] = np.where(flex['jobtype'].str.find('Remote') >= 0, "Remote", flex['location_type'])
-flex['location_type'] = np.where(flex['location'] == "Work from Anywhere", "Remote", flex['location_type'])
-flex['location_type'] = np.where(flex['location'] == "US National", "Remote", flex['location_type'])
-flex['location_type'] = flex['location_type'].str.replace('0', "Physical Location")
-
-# Clean location; separate cities and states/countries, and multiple location in-person jobs
-flex['location_city'] = np.where(flex['location_type'] == "Physical Location", flex['location'].str.split(', ', 1).str[0], flex['location_type'])
-flex['location_state_country'] = np.where(flex['location_type'] == "Physical Location", flex['location'].str.split(', ', 1).str[1], flex['location_type'])
-flex['location_city'] = np.where(flex['location_state_country'].str.count(',') >= 2, 'Multiple Locations', flex['location_city'])
-flex['location_state_country'] = np.where(flex['location_state_country'].str.count(',') >= 2, 'Multiple Locations', flex['location_state_country'])
-
-#############################################################################################################################################################
-
 indeed = pd.read_csv('indeed_jobs.csv')
 indeed = indeed.drop(columns='Unnamed: 0', axis=1)
+
+# Drop duplicates
+indeed.drop_duplicates(inplace=True)
 
 # Remove non-ascii characters
 indeed.location.replace({r'[^\x00-\x7F]+':' '}, regex=True, inplace=True)
@@ -106,6 +69,9 @@ simply = simply.drop(columns='Unnamed: 0', axis=1)
 # Replace non-ascii chars
 simply.location.replace({r'[^\x00-\x7F]+':' '}, regex=True, inplace=True)
 
+# Drop duplicates
+simply.drop_duplicates(inplace=True)
+
 # location type
 simply['location_type'] = np.where(simply['location'] == 'Remote', 'Remote', 'Physical Location')
 
@@ -144,13 +110,6 @@ from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt 
 
 
-
-
-
-
-
-
-
 stopwords = set(STOPWORDS)
 def create_wordcloud(file_lines, file_name):
     # file_lines = dice['title'].values.flatten()
@@ -171,7 +130,8 @@ def create_wordcloud(file_lines, file_name):
     plt.figure(figsize = (8, 8)) 
     plt.imshow(wordcloud) 
     plt.axis("off") 
-    plt.tight_layout(pad = 0) 
+    plt.tight_layout(pad = 0)     
+    plt.title("SimplyHired Wordcloud", fontsize=13)
     wordcloud.to_file('assets/' + file_name )
 
 
@@ -198,27 +158,27 @@ wordcloud_trends = [
         dataset contains many opportunities for Data Scientists. 
         '''
     ,
-    '''Statistical Programmer, however, is a much different string from those previously mentioned. That it is in such high
-        demand here is very interesting. Job seekers looking for a job in the data field and excel at programming might want to take this to mean they should
+    '''Machine Learning, the next largest new string, is a much different string from those previously mentioned. That it is in such high
+        demand here is very insightful. Job seekers looking for a job in data and excel at programming and machine learning techniques might want to take this to mean they should
         look more into job opportunities like these.
-    '''
+        '''
     ,
     '''We also see some terms that are very similar to job titles already mentioned, like Analyst Data, Data Science, and multiple that contain the word Analyst,
         including healthcare, QA, and Technology. This indicates that Analysts of all types are in high demand. This also indicates to us that when applying for jobs, having an idea of what kind of analyst
         you want to be can give you an advantage in honing in on a job of interest and one that will be a good fit.
-    '''
+        '''
     ,
     '''Finally, we see a multitude of levels represented in this data. We can see that there are roles open for Junior-level, Senior Level, and even
-    Managers. This dataset contains jobs for everyone, regardless of how far they are in their career. There does seem to be slightly more jobs for Senior levels
-    than there are for the others, making this source an expecially good one for those who are already on the senior leve and for people looking to move up in their
-    career.
-    '''
+        Managers. This dataset contains jobs for everyone, regardless of how far they are in their career. There does seem to be slightly more jobs for Senior levels
+        than there are for the others, making this source an expecially good one for those who are already on the senior leve and for people looking to move up in their
+        career.
+        '''
 ]
 
 app.layout = html.Div(children=[
     html.H1(children='DSE 6000 Final Project'),
 
-    html.Div(children='''
+    html.H3(children='''
         Rachel Balon, Krishna Manjeera Chittoor, Joseph Felice
     '''),
 
@@ -231,19 +191,25 @@ app.layout = html.Div(children=[
     '''),
 
     html.Div(
-        html.Img(src=app.get_asset_url("simplyhired_jobtitle_wc.png"))
+        html.Img(
+            src='https://drive.google.com/uc?export=download&id=1Ko3b73pnRSi3eKbNDai7kQqKxUOCFEWI', 
+            style={
+                'height':'70%', 
+                'width':'70%',
+                'border-style':'solid',
+                'border-width':'2px'
+            }
+        )
     ),
-
-    html.Div(children='''
-          
-    '''),
 
     html.Div(
         className="wordcloud_trends",
         children=[
             html.Ul(id='wc_trend_list', children=[html.Li(i) for i in wordcloud_trends])
         ],
-    )
+    ),
+
+
 ])
 
 if __name__ == '__main__':
