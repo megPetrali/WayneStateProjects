@@ -136,8 +136,8 @@ def create_wordcloud(file_lines, file_name, title):
     wordcloud = WordCloud(width = 1400, height = 800, 
                     background_color ='white', 
                     stopwords = stopwords, 
-                    min_font_size = 10).generate(words.lower()) 
-
+                    min_font_size = 10)
+    wordcloud.generate(words.lower()) 
 
     # plot the WordCloud            
     plt.title(title, fontsize=13)
@@ -211,9 +211,13 @@ wordcloud_trends = [
 ]
 
 salary_jobtitle_boxplot_trends = [
-    '''Insights Here'''
-
-
+    '''From this boxplot we can see that Vice Presidents make on average and overall the most money, followed by Directors. Surprisingly, Managers and Engineers make very similar distributions of salary. This could be because some senior engineers take on as many duties as managers, however they keep Engineer in their job title because they are not technically in charge of a team.'''
+    ,
+    '''Analysts make the minimum Median salary, but Statisticians make the minimum salary (out of the classified groups) this tells us that, on average, analysts make the least amount of money, but this makes sense because this is a pretty basic job title which probably on average pays more. Statisticians making the minimum salary tells us that these job seekers have to be very cognizant of what they are worth and what wage they should be asking for.'''
+    ,
+    '''Engineers make the maximum salary in the dataset. This is higher than all of the salaries for Vice President, Director, and Managers. This tells us that job titles that contain the word Engineer have the opportunity for the highest salaries'''
+    ,
+    '''There are a couple outliers in some of the groups. The "Other Data Science" jobs has the second highest salary in the dataset. This job is for a Data Science & AI Architect at IBM. This might be an indication that AI experts are in high demand. We can see whether AI is an important part of many jobs in that query visual.'''
 ]
 
 #remote vs in person comparision
@@ -310,22 +314,58 @@ app.layout = html.Div(children=[
         which in turn would give us an idea of what the most common choices are for people looking to get into Data Science careers.
     '''),
 
-    html.Div(
+    html.Div(children=[
+        html.H2(children='''Simply Hired Wordcloud''', style={'padding':'0px','margin-bottom':'0px','margin-left':'210px'}),
         html.Img(
             src='https://drive.google.com/uc?export=download&id=1Ko3b73pnRSi3eKbNDai7kQqKxUOCFEWI', 
             style={
-                'height':'40%', 
-                'width':'40%',
+                'height':'405px', 
+                'width':'720px',
                 'borderStyle':'solid',
-                'borderWidth':'2px'
+                'borderWidth':'2px',
+                'padding':'0px',
+                'margin-top':'0px'
             }
         )
-    ),
+    ]),
 
     html.Div(
         className="wordcloud_trends",
         children=[
             html.Ul(id='wc_trend_list', children=[html.Li(i) for i in wordcloud_trends])
+        ],
+    ),
+
+    html.H4(children='''
+        We can compare this wordcloud to the one for the indeed data to see if there are any differences between frequent job title contents:
+    '''),
+
+    html.Div(children=[
+        html.H2(children='''Indeed Wordcloud''', style={'padding':'0px','margin-bottom':'0px','margin-left':'200px'}),
+        html.Img(
+            src='https://drive.google.com/uc?export=download&id=1dUJV5U-98fiC1Nfn1iMcbh5Grd48WAJE', 
+            style={
+                'height':'337.5px', 
+                'width':'600px',
+                'borderStyle':'solid',
+                'borderWidth':'2px',
+                'padding':'0px',
+                'margin-top':'0px'
+            }
+        )
+    ]),
+
+    html.Div(
+        className="wordcloud_trends_indeed",
+        children=[
+            html.Ul(id='wc_trend_list_indeed', children=[html.Li(i) for i in [
+                '''We can see here that Data Scientist is still the most frequent string in a job title. Data Science and Analytics are also still
+                highly prevalent in the data.''',
+                '''However, we can see that the indeed jobs have more healthcare-related jobs (by seeing the words health, registered nurse, and even some specific
+                health fields like oncology and respiratory therapist. These jobs are interesting to be included in the data, and when we look at the descriptions
+                we can see that they actually have minimal data manipulation needs and more data collection needs. These jobs also seem to have higher expectations
+                (for example, you should be an RN to apply for a registered nurse) which are not normally needed in the data field. That makes the simply dataset
+                better for filtering out those types of jobs.''']])
         ],
     ),
 
@@ -386,7 +426,7 @@ app.layout = html.Div(children=[
     
     dcc.Graph(
         id='jobcount_map',
-        figure=fig_JobCountMap.
+        figure=fig_JobCountMap,
         style={
                 'height':'40%', 
                 'width':'40%',
