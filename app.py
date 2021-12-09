@@ -136,7 +136,7 @@ def create_wordcloud(file_lines, file_name, title):
 
     # plot the WordCloud            
     plt.title(title, fontsize=13)
-    plt.imshow(wordcloud).to_file('assets/test.png')
+    plt.imshow(wordcloud)
     plt.axis("off") 
     # plt.tight_layout(pad = 0)     
     wordcloud.to_file('assets/' + file_name )
@@ -241,6 +241,31 @@ fig_salarymap.update_layout(
     margin={"r":0, "t":0, "l":0, "b":0} 
 )
 
+# Pyspark
+# import os
+# os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-8-openjdk-amd64"
+# os.environ["SPARK_HOME"] = "/spark/spark-3.2.0-bin-hadoop3.2"
+
+# import findspark
+# findspark.init()
+# from pyspark.sql import SparkSession, Row
+# from pyspark.sql.functions import concat, col, lit,when,count,isnull,max,min,to_date
+# from pyspark import SparkContext,SparkConf
+
+# # get a spark session. 
+# spark = SparkSession.builder.master("local[*]").getOrCreate()
+
+# from pyspark.sql.functions import split, explode, desc
+# simply= spark.read.csv("simplyhired.csv",header='true', 
+#                       inferSchema='true')
+# dfWords1 = simply.select(explode(split('description', '\\s+')).alias('word')) \
+#                     .groupBy('word').count().orderBy(desc('word'))
+# dfWords2 = simply.select(explode(split('title', '\\s+')).alias('word')) \
+#                     .groupBy('word').count().orderBy(desc('word'))
+description_counts = pd.read_csv('simplywordcount.csv').drop(columns='Unnamed: 0', axis=1)
+
+title_counts = pd.read_csv('titlecount.csv').drop(columns='Unnamed: 0', axis=1)
+
 app.layout = html.Div(children=[
     html.H1(children='DSE 6000 Final Project'),
 
@@ -275,13 +300,14 @@ app.layout = html.Div(children=[
         ],
     ),
 
+    # html.Div(children=generate_table(description_counts)),
+
     html.Br(),
 
     html.H4(children='''
         Next, we will look at the job titles at a higher level by categorizing them, which makes it easier to compare salaries by job type. We
         want to see which job titles pay best and which ones have the potentially highest pay.
     '''),
-
     
     dcc.Graph(
         id='salary_title_graph',
@@ -295,15 +321,37 @@ app.layout = html.Div(children=[
         ],
     ),
 
+    html.H4(children='''
+
+    '''),
+
     dcc.Graph(
         id='remote_graph',
         figure=fig_RemoteComparison
     ),
+
+    # html.Div(
+    #     className="salary_jobtitle_trends",
+    #     children=[
+    #         html.Ul(id='salary_jobtitle_trend_list', children=[html.Li(i) for i in salary_jobtitle_boxplot_trends])
+    #     ],
+    # ),
+
+    html.H4(children='''
+    
+    '''),
     
     dcc.Graph(
         id='salary_map',
         figure=fig_salarymap
     ),
+
+    # html.Div(
+    #     className="salary_jobtitle_trends",
+    #     children=[
+    #         html.Ul(id='salary_jobtitle_trend_list', children=[html.Li(i) for i in salary_jobtitle_boxplot_trends])
+    #     ],
+    # ),
     
 ])
 
