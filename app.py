@@ -217,10 +217,14 @@ salary_jobtitle_boxplot_trends = [
 ]
 
 #remote vs in person comparision
-avg_salaries_locationtype = simply.dropna().groupby('location_type' , as_index=False ).mean()
+avg_salaries_locationtype = all_data.dropna().groupby('location_type' , as_index=False ).mean()
 avg_salaries_locationtype.head()
 
-fig_RemoteComparison = px.bar(avg_salaries_locationtype, x='location_type', y='salary' , text = 'salary')
+fig_RemoteComparison = px.bar(avg_salaries_locationtype, x='salary', y='location_type' , 
+                              text = 'salary' , orientation= 'h' 
+                              , title = 'Salary by Type of Location'
+                              , labels ={ 'salary':'Salary ($)', 'location_type':'Location Type'})
+fig_RemoteComparison.update_traces(texttemplate='%{text:$.4s}', textposition='outside')
 
 #create plotly salary map by state
 from urllib.request import urlopen
@@ -234,7 +238,7 @@ with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-c
 
 data_tograph = indeed.dropna()
 
-fig_salarymap = px.choropleth(indeed,  locations='location_state', 
+fig_salarymap = px.choropleth(data_all,  locations='location_state', 
                              color = 'salary' ,
                              color_continuous_scale="Greens", 
                              locationmode = 'USA-states',                            
