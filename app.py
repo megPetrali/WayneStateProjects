@@ -62,6 +62,8 @@ indeed['salary'] = np.where(indeed['salary_max'].isna(), indeed['salary_min'], (
 
 indeed.drop(['salary_min', 'salary_max'], axis=1, inplace=True)
 
+indeed.drop('jobtype', axis=1, inplace=True)
+
 #############################################################################################################################################################
 
 simply = pd.read_csv('simplyhired.csv')
@@ -103,8 +105,9 @@ simply['salary_max'] = np.where(simply['salary_type'] == 'Hourly', simply['salar
 simply['salary'] = np.where(simply['salary_max'].isna(), simply['salary_min'], (simply['salary_max'] + simply['salary_min']) / 2)
 
 simply.drop(['salary_min', 'salary_max'], axis=1, inplace=True)
+simply.drop('company', axis=1, inplace=True)
 
-
+all_data = pd.concat([indeed, simply])
 
 from wordcloud import WordCloud, STOPWORDS 
 import matplotlib.pyplot as plt 
@@ -120,7 +123,7 @@ def create_wordcloud(file_lines, file_name):
         for token in tokens:
             words = words + ' ' + token
 
-    wordcloud = WordCloud(width = 800, height = 800, 
+    wordcloud = WordCloud(width = 1400, height = 800, 
                     background_color ='white', 
                     stopwords = stopwords, 
                     min_font_size = 10).generate(words.lower()) 
@@ -251,8 +254,8 @@ app.layout = html.Div(children=[
         html.Img(
             src='https://drive.google.com/uc?export=download&id=1Ko3b73pnRSi3eKbNDai7kQqKxUOCFEWI', 
             style={
-                'height':'70%', 
-                'width':'70%',
+                'height':'40%', 
+                'width':'40%',
                 'borderStyle':'solid',
                 'borderWidth':'2px'
             }
