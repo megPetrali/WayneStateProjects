@@ -201,7 +201,7 @@ wordcloud_trends = [
     ,
     '''Finally, we see a multitude of levels represented in this data. We can see that there are roles open for Junior-level, Senior Level, and even
         Managers. This dataset contains jobs for everyone, regardless of how far they are in their career. There does seem to be slightly more jobs for Junior levels
-        than there are for the others, making this source an expecially good one for entry level employees.
+        than there are for the others, making this source an especially good one for entry level employees.
         '''
 ]
 
