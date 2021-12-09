@@ -351,7 +351,7 @@ app.layout = html.Div(children=[
     ),
 
     html.H4(children='''
-
+            Below is a bar chart used to compare the average salary for remote positions versus in-person.
     '''),
 
     dcc.Graph(
@@ -367,15 +367,19 @@ app.layout = html.Div(children=[
     # ),
 
     html.H4(children='''
-    
+        Below is a map of the United States showing average salary per state.
     '''),
     
     dcc.Graph(
         id='salary_map',
         figure=fig_salarymap
     ),
+ 
+    html.H4(children='''
+        Below is a map of the United States showing the volume of data related job listing per state.
+    '''),    
     
-        dcc.Graph(
+    dcc.Graph(
         id='jobcount_map',
         figure=fig_JobCountMap
     ),
