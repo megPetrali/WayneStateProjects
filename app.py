@@ -372,7 +372,12 @@ app.layout = html.Div(children=[
     
     dcc.Graph(
         id='salary_map',
-        figure=fig_salarymap
+        figure=fig_salarymap,
+        style={
+                'height':'40%', 
+                'width':'40%',
+                'borderStyle':'solid',
+                'borderWidth':'2px'}
     ),
  
     html.H4(children='''
@@ -381,7 +386,12 @@ app.layout = html.Div(children=[
     
     dcc.Graph(
         id='jobcount_map',
-        figure=fig_JobCountMap
+        figure=fig_JobCountMap.
+        style={
+                'height':'40%', 
+                'width':'40%',
+                'borderStyle':'solid',
+                'borderWidth':'2px'}
     ),
 
     # html.Div(
