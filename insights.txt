@@ -2,6 +2,6 @@ Put your insights in here so we can easily make the final conclusion and don't h
 
 
 1. Wordcloud
-Some of the most common contents of job titles in the dataset are Data Analyst, Machine Learning, and Data Science, with Data Scientist being the most common. That makes these data especially helpful to people looking for jobs of these types, and Data Science a skill that is necessary. Machine learning tells us that there are alos many opportuinities on the more technical and programatic side of this discipline. From the multitude of job titles we see, being able to specify what type of analyst you want to be (qa, technology, health) might make it easier to narrow down to jobs of interest. This dataset contains jobs for many different levels of the job selection process, including Junior, Senior, and Managers. 
+Some of the most common contents of job titles in the dataset are Data Analyst, Machine Learning, and Data Science, with Data Scientist being the most common. That makes these data especially helpful to people looking for jobs of these types, and Data Science a skill that is necessary. Machine learning tells us that there are also many opportunities on the more technical and programmatic side of this discipline. From the multitude of job titles we see, being able to specify what type of analyst you want to be (qa, technology, health) might make it easier to narrow down to jobs of interest. This dataset contains jobs for many different levels of the job selection process, including Junior, Senior, and Managers. 
 
 Test
