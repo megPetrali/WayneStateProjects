@@ -4,4 +4,27 @@ Put your insights in here so we can easily make the final conclusion and don't h
 1. Wordcloud
 Some of the most common contents of job titles in the dataset are Data Analyst, Machine Learning, and Data Science, with Data Scientist being the most common. That makes these data especially helpful to people looking for jobs of these types, and Data Science a skill that is necessary. Machine learning tells us that there are also many opportunities on the more technical and programmatic side of this discipline. From the multitude of job titles we see, being able to specify what type of analyst you want to be (qa, technology, health) might make it easier to narrow down to jobs of interest. This dataset contains jobs for many different levels of the job selection process, including Junior, Senior, and Managers. 
 
+2. Boxplot
+
+3. Barchart: Salary by type of location
+Remote jobs have a higher salary
+There is an appoximate 5K difference in avarage salary for remote jobs versus in person.
+
+4. Heatmap: Job Salary by state
+Virginia has the highest salary, likely due to large metropolitan areas such as near Washington, D.C.. (or is it Rhode Island MP needs to check colorscale)
+Here in Mighigan the average salary for a data related job is 70k
+
+
+
+
+5.Heatmap: Job Volume by state
+Most data related jobs are located in California,
+with second highest being New York.
+California's job volume for data related jobs is significantly more than other states at around double of the amount of jobs in other states
+Our datasets included little data on the northwest(Montana etc.)
+
+
+6. Joe's graph
+
+
 Test
