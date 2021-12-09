@@ -36,9 +36,10 @@ indeed['location_state'] = np.where(indeed['location_type'] == "Physical Locatio
 indeed['location_state'] = np.where(indeed['location_type'] == "Physical Location", indeed['location_state'].str.split('+', 1).str[0], indeed['location_state'])
 
 # Salary Cleaning
-# hourly or yearly
+# hourly or yearly or monthly
 indeed['salary_type'] = np.where(indeed['salary'].str.find("hour") >= 0, 'Hourly', indeed['salary'])
 indeed['salary_type'] = np.where(indeed['salary'].str.find("year") >= 0, 'Yearly', indeed['salary_type'])
+indeed['salary_type'] = np.where(indeed['salary'].str.find("month") >= 0, 'Monthly', indeed['salary_type'])
 
 # remove "a year" "an hour"
 indeed['salary'] = indeed['salary'].str.split(' a').str[0]
@@ -56,6 +57,10 @@ indeed[['salary_min','salary_max']] = indeed['salary'].str.split(" - ", expand=T
 #convert hourly number to yearly number
 indeed['salary_min'] = np.where(indeed['salary_type'] == 'Hourly', indeed['salary_min'].astype(float)*40*50, indeed['salary_min'].astype(float))
 indeed['salary_max'] = np.where(indeed['salary_type'] == 'Hourly', indeed['salary_max'].astype(float)*40*50, indeed['salary_max'].astype(float))
+
+#convert monthly number to yearly number
+indeed['salary_min'] = np.where(indeed['salary_type'] == 'Monthly', indeed['salary_min'].astype(float)*12, indeed['salary_min'].astype(float))
+indeed['salary_max'] = np.where(indeed['salary_type'] == 'Monthly', indeed['salary_max'].astype(float)*12, indeed['salary_max'].astype(float))
 
 # get final average or min salary
 indeed['salary'] = np.where(indeed['salary_max'].isna(), indeed['salary_min'], (indeed['salary_max'] + indeed['salary_min']) / 2)
@@ -114,7 +119,7 @@ import matplotlib.pyplot as plt
 
 
 stopwords = set(STOPWORDS)
-def create_wordcloud(file_lines, file_name):
+def create_wordcloud(file_lines, file_name, title):
     # file_lines = dice['title'].values.flatten()
 
     words =''
@@ -129,28 +134,27 @@ def create_wordcloud(file_lines, file_name):
                     min_font_size = 10).generate(words.lower()) 
 
 
-    # plot the WordCloud                        
-    plt.figure(figsize = (8, 8)) 
-    plt.imshow(wordcloud) 
+    # plot the WordCloud            
+    plt.title(title, fontsize=13)
+    plt.imshow(wordcloud).to_file('assets/test.png')
     plt.axis("off") 
-    plt.tight_layout(pad = 0)     
-    plt.title("SimplyHired Wordcloud", fontsize=13)
+    # plt.tight_layout(pad = 0)     
     wordcloud.to_file('assets/' + file_name )
 
 
-indeed['lower_title'] = indeed['title'].str.lower()
-indeed['simplified_title'] = np.where(indeed['lower_title'].str.find("manager") >= 0, "Manager",
-                            np.where(indeed['lower_title'].str.find("director") >= 0, "Director",
-                            np.where(indeed['lower_title'].str.find("vp ") >= 0, "Vice President",
-                            np.where(indeed['lower_title'].str.find("vice president") >= 0, "Vice President",
-                            np.where(indeed['lower_title'].str.find("data scientist") >= 0, "Scientist",
-                            np.where(indeed['lower_title'].str.find("analyst") >= 0, "Analyst",
-                            np.where(indeed['lower_title'].str.find("statisti") >= 0, "Statistician",
-                            np.where(indeed['lower_title'].str.find("engineer") >= 0, "Engineer", 
-                            np.where(indeed['lower_title'].str.find("data science") >= 0, "Other - DS", "Other")))))))))
-indeed.drop(columns='lower_title', axis=0, inplace=True)
+all_data['lower_title'] = all_data['title'].str.lower()
+all_data['simplified_title'] = np.where(all_data['lower_title'].str.find("manager") >= 0, "Manager",
+                            np.where(all_data['lower_title'].str.find("director") >= 0, "Director",
+                            np.where(all_data['lower_title'].str.find("vp ") >= 0, "Vice President",
+                            np.where(all_data['lower_title'].str.find("vice president") >= 0, "Vice President",
+                            np.where(all_data['lower_title'].str.find("data scientist") >= 0, "Scientist",
+                            np.where(all_data['lower_title'].str.find("analyst") >= 0, "Analyst",
+                            np.where(all_data['lower_title'].str.find("statisti") >= 0, "Statistician",
+                            np.where(all_data['lower_title'].str.find("engineer") >= 0, "Engineer", 
+                            np.where(all_data['lower_title'].str.find("data science") >= 0, "Other - DS", "Other")))))))))
+all_data.drop(columns='lower_title', axis=0, inplace=True)
 
-salary_job_title_plot = px.box(indeed, 
+salary_job_title_plot = px.box(all_data, 
                                 x="simplified_title", 
                                 y="salary", 
                                 title="Salaries by Job Titles", 
@@ -160,7 +164,9 @@ salary_job_title_plot = px.box(indeed,
 
 
 
-create_wordcloud(simply['title'].values.flatten(), 'simplyhired_jobtitle_wc.png')
+create_wordcloud(simply['title'].values.flatten(), 'simplyhired_jobtitle_wc.png', 'Simply Hired Job Titles')
+
+create_wordcloud(indeed['title'].values.flatten(), 'indeed_jobtitle_wc.png', 'Indeed Job Titles')
 
 def generate_table(dataframe, max_rows=10):
     return html.Table([
