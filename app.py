@@ -238,7 +238,7 @@ with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-c
 
 data_tograph = indeed.dropna()
 
-fig_salarymap = px.choropleth(data_all,  locations='location_state', 
+fig_salarymap = px.choropleth(all_data,  locations='location_state', 
                              color = 'salary' ,
                              color_continuous_scale="Greens", 
                              locationmode = 'USA-states',                            
@@ -249,6 +249,26 @@ fig_salarymap.update_layout(
     title_text = 'Salary by State' ,
     margin={"r":0, "t":0, "l":0, "b":0} 
 )
+
+#plotly map for job volume by state
+state_totals = all_data.groupby('location_state' , as_index=False).size()
+state_totals.head()
+
+
+fig_JobCountMap = px.choropleth(state_totals,  locations='location_state', 
+                             color = 'size',
+                             color_continuous_scale="blues", 
+                             locationmode = 'USA-states',                            
+                             scope="usa",
+                             title = 'Job Count by State') 
+                            
+
+fig_JobCountMap.update_layout(
+    title_text = 'Salary by State' ,
+    margin={"r":0, "t":0, "l":0, "b":0} 
+)
+
+
 
 # Pyspark
 # import os
@@ -353,6 +373,11 @@ app.layout = html.Div(children=[
     dcc.Graph(
         id='salary_map',
         figure=fig_salarymap
+    ),
+    
+        dcc.Graph(
+        id='jobcount_map',
+        figure=fig_JobCountMap
     ),
 
     # html.Div(
