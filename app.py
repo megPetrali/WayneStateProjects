@@ -88,9 +88,10 @@ simply['location_state'] = simply['location_state'].str.split(' +').str[0]
 simply['location_state'] = np.where(simply['location_city'] == 'Remote', 'Remote', simply['location_state'])
 
 # Salary Cleaning
-# hourly or yearly
+# hourly or yearly or daily
 simply['salary_type'] = np.where(simply['salary'].str.find("hour") >= 0, 'Hourly', simply['salary'])
 simply['salary_type'] = np.where(simply['salary'].str.find("year") >= 0, 'Yearly', simply['salary_type'])
+simply['salary_type'] = np.where(simply['salary'].str.find("a day") >= 0, 'Daily', simply['salary_type'])
 
 # remove "a year" "an hour"
 simply['salary'] = simply['salary'].str.split(' a').str[0]
@@ -105,6 +106,10 @@ simply[['salary_min','salary_max']] = simply['salary'].str.split(" - ", expand=T
 #convert hourly number to yearly number
 simply['salary_min'] = np.where(simply['salary_type'] == 'Hourly', simply['salary_min'].astype(float)*40*50, simply['salary_min'].astype(float))
 simply['salary_max'] = np.where(simply['salary_type'] == 'Hourly', simply['salary_max'].astype(float)*40*50, simply['salary_max'].astype(float))
+
+#convert daily to yearly number
+simply['salary_min'] = np.where(simply['salary_type'] == 'Daily', simply['salary_min'].astype(float)*50, simply['salary_min'].astype(float))
+simply['salary_max'] = np.where(simply['salary_type'] == 'Daily', simply['salary_max'].astype(float)*50, simply['salary_max'].astype(float))
 
 # get final average or min salary
 simply['salary'] = np.where(simply['salary_max'].isna(), simply['salary_min'], (simply['salary_max'] + simply['salary_min']) / 2)
