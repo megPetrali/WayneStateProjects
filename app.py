@@ -332,22 +332,24 @@ description_scatterplot.update_layout(
 )
 
 salary_location_trendlist = [
-    '''Salary Location Bar chart insights here #TODO# Megan''',
-    '''Insight 2'''
+    '''Remote jobs have a higher average salary.''',
+    '''There is an appoximate 5K difference in avarage salary for remote jobs versus in person.'''
+    
 
 
 ]
 
 jobcount_map_trendlist = [
-    '''Jobcount map insights here #TODO# Megan''',
-    '''Insight 2'''
+    '''Most data related jobs are located in California, with second highest being New York.''',
+    '''California's job volume for data related jobs is significantly more than other states at around double of the amount of jobs in other states
+Our datasets included little data on the northwest(Montana etc.)'''
 
 
 ]
 
 salary_map_trendlist = [
-    '''Salary map insights here #TODO# Megan''',
-    '''Insight 2'''
+    '''Virginia has the highest salary, likely due to nearby large metropolitan areas such as near Washington, D.C..''',
+    '''Here in Mighigan the average salary for a data related job is 70k'''
 
 ]
 
