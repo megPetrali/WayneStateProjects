@@ -276,6 +276,7 @@ data_tograph = indeed.dropna()
 fig_salarymap = px.choropleth(all_data,  locations='location_state', 
                              color = 'salary' ,
                              color_continuous_scale="Greens", 
+                             range_color=(0, 150000),
                              locationmode = 'USA-states',                            
                              scope="usa") 
                             
@@ -292,7 +293,8 @@ state_totals.head()
 
 fig_JobCountMap = px.choropleth(state_totals,  locations='location_state', 
                              color = 'size',
-                             color_continuous_scale="blues", 
+                             color_continuous_scale="blues",
+                             range_color=(0,240),
                              locationmode = 'USA-states',                            
                              scope="usa",
                              title = 'Job Count by State') 
