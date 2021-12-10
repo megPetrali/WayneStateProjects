@@ -229,6 +229,19 @@ import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 app.config.suppress_callback_exceptions = True
 
+# @app.callback(Output('remote_graph', 'figure'),
+#     [Input('radio-items', 'value')])
+# def make_bar_chart(value):
+#     trace = px.bar(avg_salaries_locationtype, x='salary', y='location_type' , 
+#                               text = 'salary' , orientation= 'h' 
+#                               , title = 'Salary by Type of Location'
+#                               , labels ={ 'salary':'Salary ($)', 'location_type':'Location Type'})
+#     # layout = #define layout
+#     figure = go.Figure(data=[trace])    
+#     figure.update_layout(transition_duration=500)
+#     # figure.update_traces(texttemplate='%{text:$.4s}', textposition='outside')
+#     return figure
+
 @app.callback(
     Output('remote_graph', 'figure'),
     Input('radio-items', 'value'))
@@ -290,33 +303,8 @@ fig_JobCountMap.update_layout(
     margin={"r":0, "t":0, "l":0, "b":0} 
 )
 
-all_data['description'] = all_data['description'].apply(lambda x: ' '.join([word for word in str(x).split() if word not in (STOPWORDS)]))
-all_data['description'] = all_data['description'].str.replace('[^\w\s]','')
-
-file_lines = all_data['description'].str.lower().values.flatten()
-description_words = []
-for line in file_lines:
-    tokens = str(line).split()
-    for token in tokens:
-        description_words.append(token)
-
-description_df = pd.DataFrame(description_words)
-description_df = description_df[0].apply(lambda x: ' '.join([word for word in str(x).split() if word not in (STOPWORDS)]))
-
-description_df = description_df.value_counts()
-description_df = description_df.reset_index()
-description_df.columns = ['words','count']
-
-description_df = description_df[description_df['count'] != 'data']
-description_df = description_df[description_df['words'] != '']
-
-
-description_df = description_df[description_df['words'] != 'data']
-description_scatterplot = px.scatter(description_df.nlargest(50,columns=['count']), x='words', y='count', size='count', color='count',
+description_scatterplot = px.scatter(all_data['description'], x='word', y='count', size='count', color='count',
                     hover_data=['count'])
-description_scatterplot.update_layout(
-    margin=dict(l=20, r=20, t=20, b=20),
-)
 
 
 
@@ -334,32 +322,36 @@ description_scatterplot.update_layout(
 # # get a spark session. 
 # spark = SparkSession.builder.master("local[*]").getOrCreate()
 
-# from pyspark.sql.functions import split, explode, desc
-# spark_simply= spark.read.csv("simplyhired.csv",header='true', 
-#                       inferSchema='true')
-# dfWords1 = spark_simply.select(explode(split('description', '\\s+')).alias('word')) \
-#                     .groupBy('word').count().orderBy(desc('word'))
-# dfWords2 = spark_simply.select(explode(split('title', '\\s+')).alias('word')) \
-#                     .groupBy('word').count().orderBy(desc('word'))
+#from pyspark.sql.functions import split, explode, desc
+#spark_simply= spark.read.csv("simplyhired.csv",header='true', 
+#                      inferSchema='true')
+#dfWords1 = spark_simply.select(explode(split('description', '\\s+')).alias('word')) \
+                    .groupBy('word').count().orderBy(desc('word'))
+#dfWords2 = spark_simply.select(explode(split('title', '\\s+')).alias('word')) \
+                    .groupBy('word').count().orderBy(desc('word'))
 
-# spark_simply=spark.createDataFrame(simply)
-# spark_simply.createOrReplaceTempView('simply')
+#spark_simply=spark.createDataFrame(simply)
+#spark_simply.createOrReplaceTempView('simply')
 
-# statesal=spark.sql("""
-# SELECT location_state, salary from simply
-# """)
+#statesal=spark.sql("""
+#SELECT location_state, salary from simply
+#Where location_state != '%Remote%'
+#order by location_state;
+""")
 
-# df6=statesal.na.drop("any")
-# df6=statesal.drop("Remote")
-# statedf=df6.orderBy('salary')
-# statedf.toPandas()
+#df6=statesal.na.drop("any")
+#statedf=df6.orderBy('salary')
+#statedf.toPandas()
+
+#description_counts = pd.read_csv('simplywordcount.csv').drop(columns='Unnamed: 0', axis=1)
+#title_counts = pd.read_csv('titlecount.csv').drop(columns='Unnamed: 0', axis=1)
+
+# query for avg state salary
+#avgst= statedf.groupby('location_state').avg()
+#avgstate=avgst.select('location_state',round('avg(salary)',0)).withColumnRenamed('round(avg(salary), 0)', 'salary').orderBy('location_state')
+#avgstate.show()
 
 
-
-
-description_counts = pd.read_csv('simplywordcount.csv').drop(columns='Unnamed: 0', axis=1)
-
-title_counts = pd.read_csv('titlecount.csv').drop(columns='Unnamed: 0', axis=1)
 
 app.layout = html.Div(children=[
     html.H1(children='DSE 6000 Final Project'),
@@ -386,9 +378,7 @@ app.layout = html.Div(children=[
                 'borderStyle':'solid',
                 'borderWidth':'2px',
                 'padding':'0px',
-                'margin-top':'0px',
-                'margin-left':'auto',
-                'margin-right':'auto'
+                'margin-top':'0px'
             }
         )
     ]),
@@ -414,9 +404,7 @@ app.layout = html.Div(children=[
                 'borderStyle':'solid',
                 'borderWidth':'2px',
                 'padding':'0px',
-                'margin-top':'0px',
-                'margin-left':'auto',
-                'margin-right':'auto'
+                'margin-top':'0px'
             }
         )
     ]),
@@ -525,9 +513,7 @@ app.layout = html.Div(children=[
                 'height':'40%', 
                 'width':'40%',
                 'borderStyle':'solid',
-                'borderWidth':'2px',
-                'margin-left':'auto',
-                'margin-right':'auto'}
+                'borderWidth':'2px'}
     ),
  
     html.H4(children='''
@@ -541,10 +527,7 @@ app.layout = html.Div(children=[
                 'height':'40%', 
                 'width':'40%',
                 'borderStyle':'solid',
-                'borderWidth':'2px',
-                 'margin-left':'auto',
-                'margin-right':'auto'
-        }
+                'borderWidth':'2px'}
     ),
 
     # html.Div(
@@ -556,7 +539,7 @@ app.layout = html.Div(children=[
     
     html.H4(
         '''The next visual is a look at what is mentioned in the job descriptions. We wanted to look at whether specific skills or cetain aspects of jobs in this dataset jump out.'''
-    ),
+    )
 
     dcc.Graph(
         id='desc_scatter',
@@ -565,20 +548,9 @@ app.layout = html.Div(children=[
             'height':'40%',
             'width':'40%',
             'borderStyle':'solid',
-            'borderWidth':'2px',
-            'margin-left':'auto',
-            'margin-right':'auto'
+            'borderWidth':'2px'
         }
-    ),
-
-    html.Div(
-        className="description_trends",
-        children=[
-            html.Ul(id='description_trend_list', children=[html.Li(i) for i in [
-                '''Job Description Insights Here'''
-            ]])
-        ],
-    )    
+    )
 
 ])
 
