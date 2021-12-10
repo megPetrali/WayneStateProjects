@@ -6,7 +6,7 @@ Some of the most common contents of job titles in the dataset are Data Analyst, 
 Comparing the two data sources shows us that there are very similar job offerings available in these datasets. However, the Indeed data contains more Health-related fields, like Nurses and Healthcare statisticians. This is either a good thing or a bad thing depending on what you are looking for. Some of those nursing jobs do not seem to have much to do with data analytics and more with data collection, not to mention also requiring a distinct schooling that not everyone searching for Data-oriented jobs may have. 
 
 2. Boxplot
-Vice Presidents make on average and overall the most money, followed by Directors, but suprisingly Managers and Engineers make very similar distributions of salary. On the other side, analysts make the minimum Median salary, but Statisticians make the minimum salary which tells us that, on average, analysts make the least amount of money, but this makes sense because this is a pretty basic job title which probably on average pays more. 
+Vice Presidents make on average and overall the most money, followed by Directors, but suprisingly Managers and Engineers make very similar distributions of salary. On the other side, analysts make the minimum Median salary, but Statisticians make the minimum salary which tells us that, on average, analysts make the least amount of money, but this makes sense because this is a pretty basic job title which probably on average pays more. Engineers make the maximum salary in the dataset. This is higher than all of the salaries for Vice President, Director, and Managers.
 
 3. Barchart: Salary by type of location
 Remote jobs have a higher salary
