@@ -444,7 +444,7 @@ app.layout = html.Div(children=[
     '''),
 
     html.Div(children=[
-        html.H2(children='''Indeed Wordcloud''', style={'padding':'0px','margin-bottom':'0px','margin-left':'200px'}),
+        html.H2(children='''Indeed Wordcloud''', style={'padding':'0px','textAlign': 'center'}),
         html.Img(
             src='https://drive.google.com/uc?export=download&id=1dUJV5U-98fiC1Nfn1iMcbh5Grd48WAJE', 
             style={
@@ -458,7 +458,7 @@ app.layout = html.Div(children=[
                 'margin-right':'auto'
             }
         )
-    ]),
+    ], style={'textAlign': 'center'}),
 
     html.Div(
         className="wordcloud_trends_indeed",
@@ -632,7 +632,7 @@ app.layout = html.Div(children=[
 
     html.Div('''
         In conclusion, we found many insights in this dataset. Some of the most common contents of job titles in the dataset are Data Analyst, Machine Learning, and Data Science, with Data Scientist being the most common. That makes these data especially helpful to people looking for jobs of these types, and Data Science a skill that is necessary. Machine learning tells us that there are also many opportunities on the more technical and programmatic side of this discipline. From the multitude of job titles we see, being able to specify what type of analyst you want to be (qa, technology, health) might make it easier to narrow down to jobs of interest. This dataset contains jobs for many different levels of the job selection process, including Junior, Senior, and Managers. Comparing the two data sources shows us that there are very similar job offerings available in these datasets. However, the Indeed data contains more Health-related fields, like Nurses and Healthcare statisticians. This is either a good thing or a bad thing depending on what you are looking for. Some of those nursing jobs do not seem to have much to do with data analytics and more with data collection, not to mention also requiring a distinct schooling that not everyone searching for Data-oriented jobs may have. In terms of salary, Vice Presidents make on average and overall the most money, followed by Directors, but surprisingly Managers and Engineers make very similar distributions of salary. On the other side, analysts make the minimum Median salary, but Statisticians make the minimum salary which tells us that, on average, analysts make the least amount of money, but this makes sense because this is a pretty basic job title which probably on average pays more. Engineers make the maximum salary in the dataset. This is higher than all of the salaries for Vice President, Director, and Managers. Remote jobs are shown to have a higher salary on average, but that varies by the physical location. There is an approximate 5K difference in average salary for remote jobs versus in person. Rhode Island and Connecticut are shown as the state with the highest salary but our final dataset only included one salary in each of these states, so more data would be needed on those states to make a full conclusion. Next, Virginia has the highest salary, likely due to large metropolitan areas such as near Washington, D.C. Here in Michigan, the average salary for a data related job is 70k. Michigan ranks about average compared to the other states. Most data related jobs listed on Simply Hired and Indeed are located in California, with second highest being New York. California's job volume for data related jobs is significantly more than other states at around double of the amount of jobs in other states. Our datasets included little data on the northwest(Montana etc.). Finally, job descriptions can also tell us much about what Data-related jobs can require. Experience is highly sought-after, as are Machine Learning skills. Team-based jobs are also very common. Finally, having some knowledge of business practices is in high demand, even for a technical job in Data Science and Analytics.
-    ''')
+    ''', style={'padding':'20px'})
 
 ])
 
