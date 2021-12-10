@@ -331,6 +331,19 @@ description_scatterplot.update_layout(
     margin=dict(l=20, r=20, t=20, b=20),
 )
 
+jobcount_map_trendlist = [
+    '''Jobcount map insights here #TODO# Megan''',
+    '''Insight 2'''
+
+
+]
+
+salary_map_trendlist = [
+    '''Salary map insights here #TODO# Megan''',
+    '''Insight 2'''
+
+]
+
 
 
 # Pyspark
@@ -548,6 +561,13 @@ app.layout = html.Div(children=[
                 'margin-left':'auto',
                 'margin-right':'auto'}
     ),
+
+    html.Div(
+        className="salary_map_trends",
+        children=[
+            html.Ul(id='salary_map_trend_list', children=[html.Li(i) for i in salary_map_trendlist])
+        ],
+    ),
  
     html.H4(children='''
         Below is a map of the United States showing the volume of data related job listing per state.
@@ -565,12 +585,12 @@ app.layout = html.Div(children=[
                 'margin-right':'auto'}
     ),
 
-    # html.Div(
-    #     className="salary_jobtitle_trends",
-    #     children=[
-    #         html.Ul(id='salary_jobtitle_trend_list', children=[html.Li(i) for i in salary_jobtitle_boxplot_trends])
-    #     ],
-    # ),
+    html.Div(
+        className="jobcount_map_trends",
+        children=[
+            html.Ul(id='jobcount_map_trend_list', children=[html.Li(i) for i in jobcount_map_trendlist])
+        ],
+    ),
     
     html.H4(
         '''The next visual is a look at what is mentioned in the job descriptions. We wanted to look at whether specific skills or cetain aspects of jobs in this dataset jump out.'''
