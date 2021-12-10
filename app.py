@@ -376,6 +376,9 @@ description_scatterplot.update_layout(
 description_counts = pd.read_csv('simplywordcount.csv').drop(columns='Unnamed: 0', axis=1)
 title_counts = pd.read_csv('titlecount.csv').drop(columns='Unnamed: 0', axis=1)
 
+#export avg salary df to csv
+
+#b.to_csv('AvgStateSalary.csv')
 
 
 app.layout = html.Div(children=[
