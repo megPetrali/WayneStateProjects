@@ -303,8 +303,33 @@ fig_JobCountMap.update_layout(
     margin={"r":0, "t":0, "l":0, "b":0} 
 )
 
-description_scatterplot = px.scatter(all_data['description'], x='word', y='count', size='count', color='count',
+all_data['description'] = all_data['description'].apply(lambda x: ' '.join([word for word in str(x).split() if word not in (STOPWORDS)]))
+all_data['description'] = all_data['description'].str.replace('[^\w\s]','')
+
+file_lines = all_data['description'].str.lower().values.flatten()
+description_words = []
+for line in file_lines:
+    tokens = str(line).split()
+    for token in tokens:
+        description_words.append(token)
+
+description_df = pd.DataFrame(description_words)
+description_df = description_df[0].apply(lambda x: ' '.join([word for word in str(x).split() if word not in (STOPWORDS)]))
+
+description_df = description_df.value_counts()
+description_df = description_df.reset_index()
+description_df.columns = ['words','count']
+
+description_df = description_df[description_df['count'] != 'data']
+description_df = description_df[description_df['words'] != '']
+
+
+description_df = description_df[description_df['words'] != 'data']
+description_scatterplot = px.scatter(description_df.nlargest(50,columns=['count']), x='words', y='count', size='count', color='count',
                     hover_data=['count'])
+description_scatterplot.update_layout(
+    margin=dict(l=20, r=20, t=20, b=20),
+)
 
 
 
@@ -326,9 +351,9 @@ description_scatterplot = px.scatter(all_data['description'], x='word', y='count
 #spark_simply= spark.read.csv("simplyhired.csv",header='true', 
 #                      inferSchema='true')
 #dfWords1 = spark_simply.select(explode(split('description', '\\s+')).alias('word')) \
-                    .groupBy('word').count().orderBy(desc('word'))
+#                     .groupBy('word').count().orderBy(desc('word'))
 #dfWords2 = spark_simply.select(explode(split('title', '\\s+')).alias('word')) \
-                    .groupBy('word').count().orderBy(desc('word'))
+#                     .groupBy('word').count().orderBy(desc('word'))
 
 #spark_simply=spark.createDataFrame(simply)
 #spark_simply.createOrReplaceTempView('simply')
@@ -337,19 +362,19 @@ description_scatterplot = px.scatter(all_data['description'], x='word', y='count
 #SELECT location_state, salary from simply
 #Where location_state != '%Remote%'
 #order by location_state;
-""")
+# """)
 
 #df6=statesal.na.drop("any")
 #statedf=df6.orderBy('salary')
 #statedf.toPandas()
 
-#description_counts = pd.read_csv('simplywordcount.csv').drop(columns='Unnamed: 0', axis=1)
-#title_counts = pd.read_csv('titlecount.csv').drop(columns='Unnamed: 0', axis=1)
-
 # query for avg state salary
 #avgst= statedf.groupby('location_state').avg()
 #avgstate=avgst.select('location_state',round('avg(salary)',0)).withColumnRenamed('round(avg(salary), 0)', 'salary').orderBy('location_state')
 #avgstate.show()
+
+description_counts = pd.read_csv('simplywordcount.csv').drop(columns='Unnamed: 0', axis=1)
+title_counts = pd.read_csv('titlecount.csv').drop(columns='Unnamed: 0', axis=1)
 
 
 
@@ -539,7 +564,7 @@ app.layout = html.Div(children=[
     
     html.H4(
         '''The next visual is a look at what is mentioned in the job descriptions. We wanted to look at whether specific skills or cetain aspects of jobs in this dataset jump out.'''
-    )
+    ),
 
     dcc.Graph(
         id='desc_scatter',
