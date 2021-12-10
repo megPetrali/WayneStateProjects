@@ -351,6 +351,9 @@ description_scatterplot = px.scatter(all_data['description'], x='word', y='count
 #avgstate=avgst.select('location_state',round('avg(salary)',0)).withColumnRenamed('round(avg(salary), 0)', 'salary').orderBy('location_state')
 #avgstate.show()
 
+#export avg salary df to csv
+
+#b.to_csv('AvgStateSalary.csv')
 
 
 app.layout = html.Div(children=[
