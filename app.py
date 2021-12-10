@@ -334,7 +334,7 @@ description_scatterplot.update_layout(
 )
 
 salary_location_trendlist = [
-    '''Remote jobs have a higher average salary.''',
+    '''With the data we used from Simply Hired and Indeed, remote jobs are shown to have a higher salary.''',
     '''There is an appoximate 5K difference in avarage salary for remote jobs versus in person.'''
     
 
@@ -350,8 +350,8 @@ Our datasets included little data on the northwest(Montana etc.)'''
 ]
 
 salary_map_trendlist = [
-    '''Virginia has the highest salary, likely due to nearby large metropolitan areas such as near Washington, D.C..''',
-    '''Here in Mighigan the average salary for a data related job is 70k'''
+    '''Rhode Island and Connecticut are shown as the state with the highest salary but our final dataset only included one salary in each of these states, so more data would be needed on those states to make a full conclusion. Next, Virginia has the highest salary, likely due to large metropolitan areas such as near Washington, D.C.''',
+    '''Here in Mighigan the average salary for a data related job is 70k. Michigan ranks about average compared to the other states.'''
 
 ]
 
