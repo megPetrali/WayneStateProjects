@@ -331,6 +331,13 @@ description_scatterplot.update_layout(
     margin=dict(l=20, r=20, t=20, b=20),
 )
 
+salary_location_trendlist = [
+    '''Salary Location Bar chart insights here #TODO# Megan''',
+    '''Insight 2'''
+
+
+]
+
 jobcount_map_trendlist = [
     '''Jobcount map insights here #TODO# Megan''',
     '''Insight 2'''
@@ -539,12 +546,12 @@ app.layout = html.Div(children=[
         style={"width": "50%"},
     ),
 
-    # html.Div(
-    #     className="salary_jobtitle_trends",
-    #     children=[
-    #         html.Ul(id='salary_jobtitle_trend_list', children=[html.Li(i) for i in salary_jobtitle_boxplot_trends])
-    #     ],
-    # ),
+    html.Div(
+        className="salary_location_trends",
+        children=[
+            html.Ul(id='salary_location_trend_list', children=[html.Li(i) for i in salary_location_trendlist])
+        ],
+    ),
 
     html.H4(children='''
         Below is a map of the United States showing average salary per state.
