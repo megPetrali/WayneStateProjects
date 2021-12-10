@@ -267,13 +267,9 @@ import json
 import pandas as pd
 import plotly.express as px
 
-with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-      print(type(response))
-      counties = json.load(response)
 
-data_tograph = indeed.dropna()
-
-fig_salarymap = px.choropleth(all_data,  locations='location_state', 
+state_salary_avg = all_data.groupby('location_state' , as_index=False).mean()
+fig_salarymap = px.choropleth(state_salary_avg,  locations='location_state', 
                              color = 'salary' ,
                              color_continuous_scale="Greens", 
                              range_color=(0, 150000),
@@ -283,7 +279,7 @@ fig_salarymap = px.choropleth(all_data,  locations='location_state',
 
 fig_salarymap.update_layout(
     title_text = 'Salary by State' ,
-    margin={"r":0, "t":0, "l":0, "b":0} 
+    margin={"r":0, "t":50, "l":0, "b":0} 
 )
 
 #plotly map for job volume by state
@@ -302,7 +298,7 @@ fig_JobCountMap = px.choropleth(state_totals,  locations='location_state',
 
 fig_JobCountMap.update_layout(
     title_text = 'Salary by State' ,
-    margin={"r":0, "t":0, "l":0, "b":0} 
+    margin={"r":0, "t":50, "l":0, "b":0} 
 )
 
 all_data['description'] = all_data['description'].apply(lambda x: ' '.join([word for word in str(x).split() if word not in (STOPWORDS)]))
@@ -328,9 +324,9 @@ description_df = description_df[description_df['words'] != '']
 
 description_df = description_df[description_df['words'] != 'data']
 description_scatterplot = px.scatter(description_df.nlargest(50,columns=['count']), x='words', y='count', size='count', color='count',
-                    hover_data=['count'])
+                    hover_data=['count'], title='Most Frequent Words in Job Descriptions')
 description_scatterplot.update_layout(
-    margin=dict(l=20, r=20, t=20, b=20),
+    margin=dict(l=20, r=20, t=50, b=20),
 )
 
 salary_location_trendlist = [
@@ -624,10 +620,19 @@ app.layout = html.Div(children=[
         className="description_trends",
         children=[
             html.Ul(id='description_trend_list', children=[html.Li(i) for i in [
-                '''Job Description Insights Here'''
+                '''Experience is highly sought-after''',
+                '''Most Jobs deal with “Analysis” and “Analytics”''',
+                '''“Years” came up as a top word, which can be observed as employers looking for years of job experience''',
+                '''“Machine”, “Learning” and “Engineering” also had high totals, which can indicate employers have a strong need for individuals with AI/ML data engineering skills.''',
+                '''“Team” showed to also have high counts. This is indicating employers are looking for candidates with abilities to work with a team, which is a necessity in the workplace.''',
+                '''Lastly, “Business” was also a top word counted. Having strong knowledge of “business” practices is a necessity to being a successfully data scientist/analyst'''
             ]])
         ],
-    )   
+    ),
+
+    html.Div('''
+        In conclusion, we found many insights in this dataset. Some of the most common contents of job titles in the dataset are Data Analyst, Machine Learning, and Data Science, with Data Scientist being the most common. That makes these data especially helpful to people looking for jobs of these types, and Data Science a skill that is necessary. Machine learning tells us that there are also many opportunities on the more technical and programmatic side of this discipline. From the multitude of job titles we see, being able to specify what type of analyst you want to be (qa, technology, health) might make it easier to narrow down to jobs of interest. This dataset contains jobs for many different levels of the job selection process, including Junior, Senior, and Managers. Comparing the two data sources shows us that there are very similar job offerings available in these datasets. However, the Indeed data contains more Health-related fields, like Nurses and Healthcare statisticians. This is either a good thing or a bad thing depending on what you are looking for. Some of those nursing jobs do not seem to have much to do with data analytics and more with data collection, not to mention also requiring a distinct schooling that not everyone searching for Data-oriented jobs may have. In terms of salary, Vice Presidents make on average and overall the most money, followed by Directors, but surprisingly Managers and Engineers make very similar distributions of salary. On the other side, analysts make the minimum Median salary, but Statisticians make the minimum salary which tells us that, on average, analysts make the least amount of money, but this makes sense because this is a pretty basic job title which probably on average pays more. Engineers make the maximum salary in the dataset. This is higher than all of the salaries for Vice President, Director, and Managers. Remote jobs are shown to have a higher salary on average, but that varies by the physical location. There is an approximate 5K difference in average salary for remote jobs versus in person. Rhode Island and Connecticut are shown as the state with the highest salary but our final dataset only included one salary in each of these states, so more data would be needed on those states to make a full conclusion. Next, Virginia has the highest salary, likely due to large metropolitan areas such as near Washington, D.C. Here in Michigan, the average salary for a data related job is 70k. Michigan ranks about average compared to the other states. Most data related jobs listed on Simply Hired and Indeed are located in California, with second highest being New York. California's job volume for data related jobs is significantly more than other states at around double of the amount of jobs in other states. Our datasets included little data on the northwest(Montana etc.). Finally, job descriptions can also tell us much about what Data-related jobs can require. Experience is highly sought-after, as are Machine Learning skills. Team-based jobs are also very common. Finally, having some knowledge of business practices is in high demand, even for a technical job in Data Science and Analytics.
+    ''')
 
 ])
 
