@@ -587,7 +587,16 @@ app.layout = html.Div(children=[
             'margin-left':'auto',
             'margin-right':'auto'
         }
-    )
+    ),
+
+    html.Div(
+        className="description_trends",
+        children=[
+            html.Ul(id='description_trend_list', children=[html.Li(i) for i in [
+                '''Job Description Insights Here'''
+            ]])
+        ],
+    )   
 
 ])
 
