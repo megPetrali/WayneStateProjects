@@ -397,7 +397,7 @@ app.layout = html.Div(children=[
     '''),
 
     html.Div(children=[
-        html.H2(children='''Simply Hired Wordcloud''', style={'padding':'0px','margin-bottom':'0px','margin-left':'210px'}),
+        html.H2(children='''Simply Hired Wordcloud''', style={'padding':'0px','textAlign': 'center'}),
         html.Img(
             src='https://drive.google.com/uc?export=download&id=1Ko3b73pnRSi3eKbNDai7kQqKxUOCFEWI', 
             style={
@@ -407,11 +407,10 @@ app.layout = html.Div(children=[
                 'borderWidth':'2px',
                 'padding':'0px',
                 'margin-top':'0px',
-                'margin-left':'auto',
-                'margin-right':'auto'
+                'textAlign': 'center'
             }
         )
-    ]),
+    ], style={'textAlign': 'center'}),
 
     html.Div(
         className="wordcloud_trends",
