@@ -9,21 +9,19 @@ Comparing the two data sources shows us that there are very similar job offering
 Vice Presidents make on average and overall the most money, followed by Directors, but suprisingly Managers and Engineers make very similar distributions of salary. On the other side, analysts make the minimum Median salary, but Statisticians make the minimum salary which tells us that, on average, analysts make the least amount of money, but this makes sense because this is a pretty basic job title which probably on average pays more. Engineers make the maximum salary in the dataset. This is higher than all of the salaries for Vice President, Director, and Managers.
 
 3. Barchart: Salary by type of location
-Remote jobs have a higher salary
-There is an appoximate 5K difference in avarage salary for remote jobs versus in person.
+With the data we used from Simply Hired and Indeed, remote jobs are shown to have a higher salary.
+There is an appoximate 5K difference in avarage salary for remote jobs versus in person. 
 
 4. Heatmap: Job Salary by state
-Virginia has the highest salary, likely due to large metropolitan areas such as near Washington, D.C.. (or is it Rhode Island MP needs to check colorscale)
-Here in Mighigan the average salary for a data related job is 70k
-
-
+Rhode Island and Connecticut are shown as the state with the highest salary but our final dataset only included one salary in each of these states, so more data would be needed on those states to make a full conclusion. Next, Virginia has the highest salary, likely due to large metropolitan areas such as near Washington, D.C.
+Here in Mighigan the average salary for a data related job is 70k. Michigan ranks about average compared to the other states.
 
 
 5.Heatmap: Job Volume by state
-Most data related jobs are located in California,
-with second highest being New York.
+Most data related jobs listed on Simply Hired and Indeed are located in California, with second highest being New York.
 California's job volume for data related jobs is significantly more than other states at around double of the amount of jobs in other states
-Our datasets included little data on the northwest(Montana etc.)
+Our datasets included little data on the northwest(Montana etc.).
+
 
 
 6. Joe's graph
