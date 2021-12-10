@@ -303,6 +303,9 @@ fig_JobCountMap.update_layout(
     margin={"r":0, "t":0, "l":0, "b":0} 
 )
 
+description_scatterplot = px.scatter(all_data['description'], x='word', y='count', size='count', color='count',
+                    hover_data=['count'])
+
 
 
 # Pyspark
@@ -319,13 +322,29 @@ fig_JobCountMap.update_layout(
 # # get a spark session. 
 # spark = SparkSession.builder.master("local[*]").getOrCreate()
 
-# from pyspark.sql.functions import split, explode, desc
-# simply= spark.read.csv("simplyhired.csv",header='true', 
-#                       inferSchema='true')
-# dfWords1 = simply.select(explode(split('description', '\\s+')).alias('word')) \
-#                     .groupBy('word').count().orderBy(desc('word'))
-# dfWords2 = simply.select(explode(split('title', '\\s+')).alias('word')) \
-#                     .groupBy('word').count().orderBy(desc('word'))
+from pyspark.sql.functions import split, explode, desc
+spark_simply= spark.read.csv("simplyhired.csv",header='true', 
+                      inferSchema='true')
+dfWords1 = spark_simply.select(explode(split('description', '\\s+')).alias('word')) \
+                    .groupBy('word').count().orderBy(desc('word'))
+dfWords2 = spark_simply.select(explode(split('title', '\\s+')).alias('word')) \
+                    .groupBy('word').count().orderBy(desc('word'))
+
+spark_simply=spark.createDataFrame(simply)
+spark_simply.createOrReplaceTempView('simply')
+
+statesal=spark.sql("""
+SELECT location_state, salary from simply
+""")
+
+df6=statesal.na.drop("any")
+df6=statesal.drop("Remote")
+statedf=df6.orderBy('salary')
+statedf.toPandas()
+
+
+
+
 description_counts = pd.read_csv('simplywordcount.csv').drop(columns='Unnamed: 0', axis=1)
 
 title_counts = pd.read_csv('titlecount.csv').drop(columns='Unnamed: 0', axis=1)
@@ -514,6 +533,21 @@ app.layout = html.Div(children=[
     #     ],
     # ),
     
+    html.H4(
+        '''The next visual is a look at what is mentioned in the job descriptions. We wanted to look at whether specific skills or cetain aspects of jobs in this dataset jump out.'''
+    )
+
+    dcc.Graph(
+        id='desc_scatter',
+        figure=description_scatterplot,
+        style={
+            'height':'40%',
+            'width':'40%',
+            'borderStyle':'solid',
+            'borderWidth':'2px'
+        }
+    )
+
 ])
 
 
