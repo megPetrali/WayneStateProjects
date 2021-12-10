@@ -221,14 +221,45 @@ salary_jobtitle_boxplot_trends = [
 ]
 
 #remote vs in person comparision
-avg_salaries_locationtype = all_data.dropna().groupby('location_type' , as_index=False ).mean()
-avg_salaries_locationtype.head()
+avg_salaries_locationtype = all_data.dropna().groupby(['location_type', 'location_state'] , as_index=False ).mean()
+print(avg_salaries_locationtype.head(50))
 
-fig_RemoteComparison = px.bar(avg_salaries_locationtype, x='salary', y='location_type' , 
-                              text = 'salary' , orientation= 'h' 
-                              , title = 'Salary by Type of Location'
+
+import plotly.graph_objects as go
+from dash.dependencies import Input, Output
+app.config.suppress_callback_exceptions = True
+
+# @app.callback(Output('remote_graph', 'figure'),
+#     [Input('radio-items', 'value')])
+# def make_bar_chart(value):
+#     trace = px.bar(avg_salaries_locationtype, x='salary', y='location_type' , 
+#                               text = 'salary' , orientation= 'h' 
+#                               , title = 'Salary by Type of Location'
+#                               , labels ={ 'salary':'Salary ($)', 'location_type':'Location Type'})
+#     # layout = #define layout
+#     figure = go.Figure(data=[trace])    
+#     figure.update_layout(transition_duration=500)
+#     # figure.update_traces(texttemplate='%{text:$.4s}', textposition='outside')
+#     return figure
+
+@app.callback(
+    Output('remote_graph', 'figure'),
+    Input('radio-items', 'value'))
+def update_figure(value):
+    filtered_df = avg_salaries_locationtype[(avg_salaries_locationtype.location_state == value) | (avg_salaries_locationtype.location_state == 'Remote')]
+    fig = px.bar(filtered_df, x='salary', y='location_type' , 
+                              text = 'salary' , orientation= 'h' ,
+                              title = 'Salary by Type of Location'
                               , labels ={ 'salary':'Salary ($)', 'location_type':'Location Type'})
-fig_RemoteComparison.update_traces(texttemplate='%{text:$.4s}', textposition='outside')
+
+    fig.update_layout(transition_duration=500)
+    fig.update_layout(
+        autosize=True,
+        margin=dict(l=200, r=80, t=50, b=200)
+    )
+
+    fig.update_traces(texttemplate='%{text:$.4s}', textposition='outside')
+    return fig
 
 #create plotly salary map by state
 from urllib.request import urlopen
@@ -394,9 +425,51 @@ app.layout = html.Div(children=[
             Below is a bar chart used to compare the average salary for remote positions versus in-person.
     '''),
 
-    dcc.Graph(
-        id='remote_graph',
-        figure=fig_RemoteComparison
+    html.Div(children=[
+        dcc.Graph(
+            id='remote_graph',
+        ),
+        dcc.Dropdown(
+            id='radio-items',
+            options = [
+                {'label': 'Rhode Island', 'value': 'RI'},
+                {'label': 'Connecticut', 'value': 'CT'},
+                {'label': 'District of Columbia', 'value': 'DC'},
+                {'label': 'Alaska', 'value': 'AK'},
+                {'label': 'Washington', 'value': 'WA'},
+                {'label': 'Colorado', 'value': 'CO'},
+                {'label': 'California', 'value': 'CA'},
+                {'label': 'Illinois', 'value': 'IL'},
+                {'label': 'Texas', 'value': 'TX'},
+                {'label': 'New York', 'value': 'NY'},
+                {'label': 'Virginia', 'value': 'VA'},
+                {'label': 'Missouri', 'value': 'MO'},
+                {'label': 'Tennessee', 'value': 'TN'},
+                {'label': 'New Jersey', 'value': 'NJ'},
+                {'label': 'Georgia', 'value': 'GA'},
+                {'label': 'Arizona', 'value': 'AZ'},
+                {'label': 'Maryland', 'value': 'MD'},
+                {'label': 'Florida', 'value': 'FL'},
+                {'label': 'Michigan', 'value': 'MI'},
+                {'label': 'Ohio', 'value': 'OH'},
+                {'label': 'Pennsylvania', 'value': 'PA'},
+                {'label': 'Delaware', 'value': 'DE'},
+                {'label': 'Utah', 'value': 'UT'},
+                {'label': 'South Carolina', 'value': 'SC'},
+                {'label': 'North Carolina', 'value': 'NC'},
+                {'label': 'Wisconsin', 'value': 'WI'},
+                {'label': 'Kentucky', 'value': 'KY'},
+                {'label': 'Massachusetts', 'value': 'MA'},
+                {'label': 'Indiana', 'value': 'IN'},
+                {'label': 'Hawaii', 'value': 'HI'},
+                {'label': 'Louisiana', 'value': 'LA'},
+                {'label': 'Arkansas', 'value': 'AR'},
+                {'label': 'New Mexico', 'value': 'NM'}
+            ],
+            value = "MD"
+            )
+            ],
+        style={"width": "50%"},
     ),
 
     # html.Div(
@@ -442,6 +515,8 @@ app.layout = html.Div(children=[
     # ),
     
 ])
+
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
