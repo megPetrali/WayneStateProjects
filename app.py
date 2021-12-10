@@ -406,7 +406,9 @@ app.layout = html.Div(children=[
                 'borderStyle':'solid',
                 'borderWidth':'2px',
                 'padding':'0px',
-                'margin-top':'0px'
+                'margin-top':'0px',
+                'margin-left':'auto',
+                'margin-right':'auto'
             }
         )
     ]),
@@ -432,7 +434,9 @@ app.layout = html.Div(children=[
                 'borderStyle':'solid',
                 'borderWidth':'2px',
                 'padding':'0px',
-                'margin-top':'0px'
+                'margin-top':'0px',
+                'margin-left':'auto',
+                'margin-right':'auto'
             }
         )
     ]),
@@ -541,7 +545,9 @@ app.layout = html.Div(children=[
                 'height':'40%', 
                 'width':'40%',
                 'borderStyle':'solid',
-                'borderWidth':'2px'}
+                'borderWidth':'2px',
+                'margin-left':'auto',
+                'margin-right':'auto'}
     ),
  
     html.H4(children='''
@@ -555,7 +561,9 @@ app.layout = html.Div(children=[
                 'height':'40%', 
                 'width':'40%',
                 'borderStyle':'solid',
-                'borderWidth':'2px'}
+                'borderWidth':'2px',
+                'margin-left':'auto',
+                'margin-right':'auto'}
     ),
 
     # html.Div(
@@ -576,7 +584,9 @@ app.layout = html.Div(children=[
             'height':'40%',
             'width':'40%',
             'borderStyle':'solid',
-            'borderWidth':'2px'
+            'borderWidth':'2px',
+            'margin-left':'auto',
+            'margin-right':'auto'
         }
     )
 
